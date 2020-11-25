@@ -47,7 +47,7 @@ def parse_times(tokens, match_type = None):
 					total_time += calculate_time(start_time,tokens[index])
 				start_time = None
 		index += 1
-	return total_time
+	return round(total_time,2)
 
 	
 def add_hours_to_time(time, hours):
