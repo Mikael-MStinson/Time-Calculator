@@ -59,3 +59,15 @@ def add_hours_to_time(time, hours):
 	return time + hours
 
 	
+if __name__ == "__main__":
+	while True:
+		try:
+			entry = token_times_from_string(input(">"))
+			start_time = entry[0]
+			total_time =  parse_times(entry)
+			deductable_time = parse_times(entry, match_type = False)
+			end_time = add_hours_to_time(start_time, total_time)
+			print("start time: {}, end time: {}, deduct: {}, total: {}".format(start_time, end_time, deductable_time, total_time-deductable_time))
+			
+		except Exception as e:
+			print(e)
