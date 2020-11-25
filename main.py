@@ -55,8 +55,8 @@ def add_hours_to_time(time, hours):
 	minutes = hours % 100
 	hours = hours - minutes + (minutes * (6/10))
 	if time + hours > 1259:
-		return time + hours - 1200
-	return time + hours
+		return int(time + hours - 1200)
+	return int(time + hours)
 
 	
 if __name__ == "__main__":
