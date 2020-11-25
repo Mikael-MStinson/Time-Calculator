@@ -2,6 +2,7 @@ from main import calculate_time
 from main import token_times_from_string
 from main import UnknownTokenError
 from main import parse_times
+from main import add_hours_to_time
 from unittest import TestCase
 
 class TestCalculateTime(TestCase):
@@ -69,3 +70,22 @@ class TestParseTimes(TestCase):
 		
 	def test_three_successive_times_with_one_discounted_matching_false(self):
 		self.assertEqual(parse_times([900, True, 1000, False, 1100, True, 100], match_type = False), 1)
+		
+class TestAddHoursToTime(TestCase):	
+	def test_add_zero_hours_to_time(self):
+		self.assertEqual(add_hours_to_time(1000,0), 1000)
+		
+	def test_add_one_hour_to_time(self):
+		self.assertEqual(add_hours_to_time(1000,1), 1100)
+
+	def test_add_one_hour_to_time_over_noon(self):
+		self.assertEqual(add_hours_to_time(1200,1), 100)
+	
+	def test_add_half_hour_to_time(self):
+		self.assertEqual(add_hours_to_time(1000,0.5), 1030)
+	
+	def test_add_half_hour_to_time_over_noon(self):
+		self.assertEqual(add_hours_to_time(1200,0.5), 1230)
+		
+	def test_add_one_hour_to_time_over_noon_from_half_hour(self):
+		self.assertEqual(add_hours_to_time(1230,1), 130)

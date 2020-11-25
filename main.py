@@ -48,4 +48,14 @@ def parse_times(tokens, match_type = None):
 				start_time = None
 		index += 1
 	return total_time
+
+	
+def add_hours_to_time(time, hours):
+	hours *= 100
+	minutes = hours % 100
+	hours = hours - minutes + (minutes * (6/10))
+	if time + hours > 1259:
+		return time + hours - 1200
+	return time + hours
+
 	
