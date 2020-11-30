@@ -20,7 +20,7 @@ For example, if you spent 9:00 am to 9:30 am driving, 9:30 am to 10:30 am workin
 When entering your time, any time stamps should be entered as a 3-4 digit number. For example ```10:30 am``` should be entered as ```1030```. You do not need to convert to millitary time when entering time stamps after 12:00 pm. Entering ```100``` for 1:00 pm works fine.
 
 A time entry will always consist of 2 timestamps and a deductability marker, arranged like this ```1000 on 1100``` or like this ```230 off 345```.
-For successive time entries, the common timestamps can be combined into one. Example ```1000 on 1100 1100 off 1200``` can be written as ```1000 on 1100 off 1200```.
+For consecutive time entries, the common timestamps can be combined into one. Example ```1000 on 1100 1100 off 1200``` can be written as ```1000 on 1100 off 1200```.
 
 ### Understanding the Report
 
