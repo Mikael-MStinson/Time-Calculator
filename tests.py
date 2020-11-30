@@ -111,4 +111,6 @@ class TestCombineAndDeductTimeEntries(TestCase):
 		'''End time is invalid hour values'''
 		self.assertEqual(combine_and_deduct_time_entries("945 off 1016 on 1112 1234 on 1249"),(945,1127,0.52,1.18))
 	
-	
+	def test_bug_2(self):
+		'''Actual Hours Discrepancy'''
+		self.assertEqual(combine_and_deduct_time_entries("1112 off 1124 on 1155 off 1215 1249 on 1258"),(1112,1224,0.53,0.67))

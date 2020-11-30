@@ -73,7 +73,7 @@ def combine_and_deduct_time_entries(time_entries):
 	total_time =  parse_times(entry)
 	deductable_time = parse_times(entry, match_type = False)
 	end_time = add_hours_to_time(start_time, total_time)
-	return start_time, end_time, deductable_time, total_time-deductable_time
+	return start_time, end_time, deductable_time, round(total_time-deductable_time,2)
 
 	
 if __name__ == "__main__":
