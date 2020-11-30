@@ -91,6 +91,9 @@ class TestAddHoursToTime(TestCase):
 	def test_add_one_hour_to_time_over_noon_from_half_hour(self):
 		self.assertEqual(add_hours_to_time(1230,1), 130)
 		
+	def test_faulty_addition_1(self):
+		self.assertEqual(add_hours_to_time(945,1.7), 1127.0)
+		
 class TestCombineAndDeductTimeEntries(TestCase):
 	def test_no_time_entries(self):
 		self.assertRaises(Exception, combine_and_deduct_time_entries, "")
@@ -103,5 +106,9 @@ class TestCombineAndDeductTimeEntries(TestCase):
 	
 	def test_non_consecutive_time_entries(self):
 		self.assertEqual(combine_and_deduct_time_entries("1000 on 1100 off 100 on 200 300 on 430"),(1000,330,2.0,3.5))
+	
+	def test_bug_1(self):
+		'''End time is invalid hour values'''
+		self.assertEqual(combine_and_deduct_time_entries("945 off 1016 on 1112 1234 on 1249"),(945,1127,0.52,1.18))
 	
 	

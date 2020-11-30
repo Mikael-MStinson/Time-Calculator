@@ -52,8 +52,14 @@ def parse_times(tokens, match_type = None):
 	
 def add_hours_to_time(time, hours):
 	hours *= 100
-	minutes = hours % 100
-	hours = hours - minutes + (minutes * (6/10))
+	minutes = (hours % 100)
+	hours -= minutes 
+	minutes *= (6/10)#by this point, hours has the hour element, and minutes has the minute element
+	time_minutes = time % 100
+	while time_minutes + minutes > 59:
+		minutes -= 60
+		hours += 100
+	hours = hours + minutes 
 	if time + hours > 1259:
 		return int(time + hours - 1200)
 	return int(time + hours)
@@ -68,6 +74,7 @@ def combine_and_deduct_time_entries(time_entries):
 	deductable_time = parse_times(entry, match_type = False)
 	end_time = add_hours_to_time(start_time, total_time)
 	return start_time, end_time, deductable_time, total_time-deductable_time
+
 	
 if __name__ == "__main__":
 	while True:
