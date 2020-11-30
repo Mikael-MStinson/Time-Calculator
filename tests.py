@@ -94,6 +94,9 @@ class TestAddHoursToTime(TestCase):
 	def test_faulty_addition_1(self):
 		self.assertEqual(add_hours_to_time(945,1.7), 1127.0)
 		
+	def test_faulty_addition_2(self):
+		self.assertEqual(add_hours_to_time(202,0.64), 241)
+		
 class TestCombineAndDeductTimeEntries(TestCase):
 	def test_no_time_entries(self):
 		self.assertRaises(Exception, combine_and_deduct_time_entries, "")
@@ -114,3 +117,7 @@ class TestCombineAndDeductTimeEntries(TestCase):
 	def test_bug_2(self):
 		'''Actual Hours Discrepancy'''
 		self.assertEqual(combine_and_deduct_time_entries("1112 off 1124 on 1155 off 1215 1249 on 1258"),(1112,1224,0.53,0.67))
+		
+	def test_bug_3(self): 
+		'''End time of consecutive time entries does not line up'''
+		self.assertEqual(combine_and_deduct_time_entries("202 off 217 on 225 off 239 on 241"),(202,241,0.48,0.17))
