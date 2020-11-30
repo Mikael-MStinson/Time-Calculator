@@ -3,6 +3,7 @@ from main import token_times_from_string
 from main import UnknownTokenError
 from main import parse_times
 from main import add_hours_to_time
+from main import combine_and_deduct_time_entries
 from unittest import TestCase
 
 class TestCalculateTime(TestCase):
@@ -89,3 +90,18 @@ class TestAddHoursToTime(TestCase):
 		
 	def test_add_one_hour_to_time_over_noon_from_half_hour(self):
 		self.assertEqual(add_hours_to_time(1230,1), 130)
+		
+class TestCombineAndDeductTimeEntries(TestCase):
+	def test_no_time_entries(self):
+		self.assertRaises(Exception, combine_and_deduct_time_entries, "")
+		
+	def test_one_time_entry(self):
+		self.assertEqual(combine_and_deduct_time_entries("1000 on 1100"),(1000,1100,0.0,1.0))
+		
+	def test_consecutive_time_entries(self):
+		self.assertEqual(combine_and_deduct_time_entries("1000 on 1100 off 100 on 200"),(1000,200,2.0,2.0))
+	
+	def test_non_consecutive_time_entries(self):
+		self.assertEqual(combine_and_deduct_time_entries("1000 on 1100 off 100 on 200 300 on 430"),(1000,330,2.0,3.5))
+	
+	

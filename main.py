@@ -58,16 +58,23 @@ def add_hours_to_time(time, hours):
 		return int(time + hours - 1200)
 	return int(time + hours)
 
+
+def combine_and_deduct_time_entries(time_entries):
+	entry = token_times_from_string(time_entries)
+	if entry == []:
+		raise Exception("Please enter a time")
+	start_time = entry[0]
+	total_time =  parse_times(entry)
+	deductable_time = parse_times(entry, match_type = False)
+	end_time = add_hours_to_time(start_time, total_time)
+	return start_time, end_time, deductable_time, total_time-deductable_time
 	
 if __name__ == "__main__":
 	while True:
 		try:
-			entry = token_times_from_string(input(">"))
-			start_time = entry[0]
-			total_time =  parse_times(entry)
-			deductable_time = parse_times(entry, match_type = False)
-			end_time = add_hours_to_time(start_time, total_time)
-			print("start time: {}, end time: {}, deduct: {}, total: {}".format(start_time, end_time, deductable_time, total_time-deductable_time))
+			time_entries = input(">")
+			time_values = combine_and_deduct_time_entries(time_entries)
+			print("start time: {}, end time: {}, deduct: {}, total: {}".format(*time_values))
 			
 		except Exception as e:
 			print(e)
