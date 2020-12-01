@@ -121,3 +121,6 @@ class TestCombineAndDeductTimeEntries(TestCase):
 	def test_bug_3(self): 
 		'''End time of consecutive time entries does not line up'''
 		self.assertEqual(combine_and_deduct_time_entries("202 off 217 on 225 off 239 on 241"),(202,241,0.48,0.17)) #connectwise is saying 0.17 for actual time: 0.133333 + 0.03333333
+		
+	def test_bug_4(self):
+		self.assertEqual(combine_and_deduct_time_entries("1110 off 1132 on 1217 off 1235 on 1254"),(1110,1254,0.67,1.06))
