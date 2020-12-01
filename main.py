@@ -1,4 +1,5 @@
 import re
+import math
 
 def calculate_time(start,end):
 	if end < start:
@@ -8,7 +9,7 @@ def calculate_time(start,end):
 	end_minute = end%100
 	start = start - start_minute + (start_minute * (10/6))
 	end = end - end_minute + (end_minute * (10/6))
-	return round((end-start)/100,2)
+	return (end-start)/100
 	
 def token_times_from_string(string):
 	if string == "":
@@ -54,7 +55,7 @@ def add_hours_to_time(time, hours):
 	hours *= 100
 	minutes = (hours % 100)
 	hours -= minutes 
-	minutes *= (6/10)#by this point, hours has the hour element, and minutes has the minute element
+	minutes = math.ceil(minutes * (6/10))
 	time_minutes = time % 100
 	while time_minutes + minutes > 59:
 		minutes -= 60

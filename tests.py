@@ -26,7 +26,7 @@ class TestCalculateTime(TestCase):
 		self.assertEqual(calculate_time(800,300), 7)
 		
 	def test_odd_hours(self):
-		self.assertEqual(calculate_time(1011,1042), 0.52)
+		self.assertAlmostEqual(calculate_time(1011,1042), 0.5166666666666663)
 		
 class TestTokenTimesFromString(TestCase):
 	def test_no_time_block(self):
@@ -120,4 +120,4 @@ class TestCombineAndDeductTimeEntries(TestCase):
 		
 	def test_bug_3(self): 
 		'''End time of consecutive time entries does not line up'''
-		self.assertEqual(combine_and_deduct_time_entries("202 off 217 on 225 off 239 on 241"),(202,241,0.48,0.17))
+		self.assertEqual(combine_and_deduct_time_entries("202 off 217 on 225 off 239 on 241"),(202,241,0.48,0.17)) #connectwise is saying 0.17 for actual time: 0.133333 + 0.03333333
