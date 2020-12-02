@@ -48,12 +48,21 @@ class Timestamp:
 		minute *= 10/6
 		return hour + (minute/100)
 		
-		
 
+class TimeBlock:
+	def __init__(self, start, end, billable):
+		self.start = start
+		self.end = end
+		self.billable = billable
 		
-
+	def hours(self, billable = None):
+		if billable == None or self.billable == billable:
+			return self.end-self.start
+		else:
+			return 0
+				
 	
-def token_times_from_string(string):
+def tokenize_times_from_string(string):
 	if string == "":
 		return []
 	int_pattern = re.compile(r"\d{3,4}")
@@ -75,31 +84,31 @@ class UnknownTokenError(Exception):
 	pass
 	
 	
-def parse_times(tokens, match_type = None):
-	if tokens == []: return 0
-	total_time = 0
+def parse_times_from_tokens(tokens):
+	if tokens == []: return []
+	blocks = []
 	index = 0
-	start_time = None
-	while index < len(tokens):
-		if type(tokens[index]) == bool:
-			start_time = tokens[index-1]
-		if type(tokens[index]) == Timestamp:
-			if start_time == None: start_time = tokens[index]
-			else: 
-				if match_type == None or tokens[index-1] == match_type:
-					total_time += tokens[index] - start_time
-				start_time = None
+	while index < len(tokens) - 2:
+		if type(tokens[index]) == Timestamp and type(tokens[index+1]) == bool and type(tokens[index+2]) == Timestamp:
+				blocks.append(TimeBlock(tokens[index], tokens[index+2], tokens[index+1]))
 		index += 1
-	return round(total_time,2)
+	return blocks
 
+
+def add_blocks(blocks, billable=None):
+	hours = 0
+	for block in blocks:
+		hours += block.hours(billable)
+	return round(hours,2)
 
 def combine_and_deduct_time_entries(time_entries):
-	entry = token_times_from_string(time_entries)
-	if entry == []:
+	tokens = tokenize_times_from_string(time_entries)
+	blocks = parse_times_from_tokens(tokens)
+	if blocks == []:
 		raise Exception("Please enter a time")
-	start_time = entry[0]
-	total_time =  parse_times(entry)
-	deductable_time = parse_times(entry, match_type = False)
+	start_time = blocks[0].start
+	total_time =  add_blocks(blocks)
+	deductable_time = add_blocks(blocks, billable =  False)
 	end_time = start_time + total_time
 	return start_time.time(), end_time.time(), deductable_time, round(total_time-deductable_time,2)
 
