@@ -1,6 +1,8 @@
 import re
 import math
 
+report = None
+
 class Timestamp:
 	def __init__(self, timestamp):
 		_timestamp = timestamp
@@ -57,10 +59,34 @@ class TimeBlock:
 		
 	def hours(self, billable = None):
 		if billable == None or self.billable == billable:
-			return self.end-self.start
+			return round(self.end-self.start,3)
 		else:
 			return 0
 				
+				
+class Report:
+	def __init__(self):
+		self.start_time = None
+		self.end_time = None
+		self.blocks = []
+		self.total = None
+		self.deductable_time = None
+		self.total_time = None
+		
+	def add_start_time(self, start_time):
+		self.start_time = start_time
+	def add_end_time(self, end_time):
+		self.end_time = end_time
+	def add_block(self, block):
+		self.blocks.append(block)
+	def add_total(self, total):
+		self.total = total
+	def add_deductable_time(self, deductable_time):
+		self.deductable_time = deductable_time
+	def add_total_time(self, total_time):
+		self.total_time = total_time
+	def print(self):
+		print("\nStart:{} End:{} Subtotal:{} Deduct:{} Total:{} Breakdown:{}".format(self.start_time,self.end_time,self.total,self.deductable_time,self.total_time,self.blocks))
 	
 def tokenize_times_from_string(string):
 	if string == "":
@@ -96,20 +122,31 @@ def parse_times_from_tokens(tokens):
 
 
 def add_blocks(blocks, billable=None):
+	global report
 	hours = 0
 	for block in blocks:
+		if billable==None:
+			report.add_block(block.hours())
 		hours += block.hours(billable)
 	return round(hours,2)
 
 def combine_and_deduct_time_entries(time_entries):
+	global report
+	report = Report()
 	tokens = tokenize_times_from_string(time_entries)
 	blocks = parse_times_from_tokens(tokens)
 	if blocks == []:
 		raise Exception("Please enter a time")
 	start_time = blocks[0].start
+	report.add_start_time(start_time)
 	total_time =  add_blocks(blocks)
+	report.add_total(total_time)
 	deductable_time = add_blocks(blocks, billable =  False)
+	report.add_deductable_time(deductable_time)
 	end_time = start_time + total_time
+	report.add_end_time(end_time)
+	report.add_total_time(round(total_time-deductable_time,2))
+	report.print()
 	return start_time.time(), end_time.time(), deductable_time, round(total_time-deductable_time,2)
 
 	

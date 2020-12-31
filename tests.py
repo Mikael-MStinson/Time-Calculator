@@ -30,3 +30,10 @@ class TestCombineAndDeductTimeEntries(TestCase):
 		
 	def test_bug_4(self):
 		self.assertEqual(combine_and_deduct_time_entries("1110 off 1132 on 1217 off 1235 on 1254"),(1110,1254,0.67,1.06))
+		
+	def test_bug_5(self):
+		'''Total time rounds down when it should round up'''
+		self.assertEqual(combine_and_deduct_time_entries("847 on 854 off 905 on 931 1158 on 1221"),(847,955,0.18,0.95)) 
+		# total before deduction should be 1.13, tests show 1.12
+		# that is because we are rounding 1.1166666666666667 to 2 decimal places
+		
